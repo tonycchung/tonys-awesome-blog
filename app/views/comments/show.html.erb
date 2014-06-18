@@ -10,6 +10,9 @@
   <%= @comment.post %>
 </p>
 
+<div class="reply">
+  <%= render @replies %>
+</div>
 
 <%= link_to 'Edit', edit_comment_path(@comment) %> |
 <%= link_to 'Back', comments_path %>
