@@ -12,6 +12,7 @@ group :development, :test do
   gem 'hirb'
   gem 'pry-rails'
   gem 'rspec-rails'
+  gem 'bullet'
 end
 
 group :test do
@@ -28,3 +29,7 @@ gem 'rails-observers'
 gem 'actionpack-page_caching'
 gem 'actionpack-action_caching'
 gem 'activerecord-deprecated_finders'
+
+gem 'puma'
+gem 'rack-mini-profiler'
+gem 'will_paginate', '~> 3.0'
