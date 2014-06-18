@@ -15,5 +15,8 @@ module IvanTheTerriblesBlog
     config.generators do |g|
       g.test_framework :minitest, spec: true
     end
+    # config.middleware.use Rack::Deflater
+    # config.middleware.insert_before ActionDispatch::Static, Rack::Deflater
+    # config.assets.paths << Rails.root.join('public')
   end
 end

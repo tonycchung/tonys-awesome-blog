@@ -35,4 +35,4 @@ gem 'rack-mini-profiler'
 gem 'will_paginate', '~> 3.0'
 gem "rack-timeout"
 gem 'rails_12factor', group: :production
-#ruby "2.0.0", :engine => "rbx", :engine_version => "2.0.0.rc1"
+gem 'heroku-deflater', :group => :production
