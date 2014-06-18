@@ -33,3 +33,4 @@ gem 'activerecord-deprecated_finders'
 gem 'puma'
 gem 'rack-mini-profiler'
 gem 'will_paginate', '~> 3.0'
+gem "rack-timeout"

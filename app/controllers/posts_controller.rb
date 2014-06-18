@@ -1,16 +1,17 @@
 class PostsController < ApplicationController
   caches_page :index, :show
+  # cache_sweeper :post_sweeper, :only => [ :edit, :destroy]
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all.includes(:comments).paginate(page: params[:page], per_page: 100)
+    @posts = Post.all.includes(:comments).paginate(page: params[:page], per_page: 500)
   end
 
   # GET /posts/1
   # GET /posts/1.json
   def show
     @post = Post.find(params[:id])
-    @comments = @post.comments.paginate(page: params[:page], per_page: 10)
+    @comments = @post.comments.paginate(page: params[:page], per_page: 100)
   end
 
   # GET /posts/new
@@ -31,6 +32,11 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
+        # expire_page posts_path
+        # expire_page post_path(@post)
+        # expire_page "/"
+        # FileUtils.rm_rf "#{page_cache_directory}/posts/page"
+
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
         format.json { render json: @post, status: :created, location: @post }
       else
@@ -47,6 +53,11 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.update_attributes(post_params)
+        # expire_page posts_path
+        # expire_page post_path(@post)
+        # expire_page "/"
+        # FileUtils.rm_rf "#{page_cache_directory}/posts/page"
+
         format.html { redirect_to @post, notice: 'Post was successfully updated.' }
         format.json { head :no_content }
       else
@@ -61,6 +72,10 @@ class PostsController < ApplicationController
   def destroy
     @post = Post.find(params[:id])
     @post.destroy
+    # expire_page posts_path
+    # expire_page post_path(@post)
+    # expire_page "/"
+    # FileUtils.rm_rf "#{page_cache_directory}/posts/page"
   end
 
   private

@@ -1,4 +1,5 @@
 class CommentsController < ApplicationController
+  caches_page :index, :show
   # GET /comments
   # GET /comments.json
   def index
@@ -60,6 +61,10 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       if @comment.update_attributes(comment_params)
+        expire_page posts_path
+        expire_page post_path(@post)
+        expire_page "/"
+        FileUtils.rm_rf "#{page_cache_directory}/posts/page"
         format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
         format.json { head :no_content }
       else
