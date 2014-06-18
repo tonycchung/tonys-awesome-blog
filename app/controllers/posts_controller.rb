@@ -1,4 +1,5 @@
 class PostsController < ApplicationController
+  caches_page :index, :show
   # GET /posts
   # GET /posts.json
   def index
