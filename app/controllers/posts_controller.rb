@@ -1,35 +1,23 @@
 class PostsController < ApplicationController
+  caches_page :index, :show
+  # cache_sweeper :post_sweeper, :only => [ :edit, :destroy]
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
-
-    respond_to do |format|
-      format.html # index.html.erb
-      format.json { render json: @posts }
-    end
+    @posts = Post.all.includes(:comments).paginate(page: params[:page], per_page: 500)
   end
 
   # GET /posts/1
   # GET /posts/1.json
   def show
     @post = Post.find(params[:id])
-
-    respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @post }
-    end
+    @comments = @post.comments.paginate(page: params[:page], per_page: 100)
   end
 
   # GET /posts/new
   # GET /posts/new.json
   def new
     @post = Post.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @post }
-    end
   end
 
   # GET /posts/1/edit
@@ -40,10 +28,15 @@ class PostsController < ApplicationController
   # POST /posts
   # POST /posts.json
   def create
-    @post = Post.new(params[:post])
+    @post = Post.new(post_params)
 
     respond_to do |format|
       if @post.save
+        # expire_page posts_path
+        # expire_page post_path(@post)
+        # expire_page "/"
+        # FileUtils.rm_rf "#{page_cache_directory}/posts/page"
+
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
         format.json { render json: @post, status: :created, location: @post }
       else
@@ -59,7 +52,12 @@ class PostsController < ApplicationController
     @post = Post.find(params[:id])
 
     respond_to do |format|
-      if @post.update_attributes(params[:post])
+      if @post.update_attributes(post_params)
+        # expire_page posts_path
+        # expire_page post_path(@post)
+        # expire_page "/"
+        # FileUtils.rm_rf "#{page_cache_directory}/posts/page"
+
         format.html { redirect_to @post, notice: 'Post was successfully updated.' }
         format.json { head :no_content }
       else
@@ -74,10 +72,14 @@ class PostsController < ApplicationController
   def destroy
     @post = Post.find(params[:id])
     @post.destroy
+    # expire_page posts_path
+    # expire_page post_path(@post)
+    # expire_page "/"
+    # FileUtils.rm_rf "#{page_cache_directory}/posts/page"
+  end
 
-    respond_to do |format|
-      format.html { redirect_to posts_url }
-      format.json { head :no_content }
-    end
+  private
+  def post_params
+    params.require(:post).permit(:body, :title)
   end
 end

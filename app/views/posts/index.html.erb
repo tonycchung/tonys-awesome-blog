@@ -1,9 +1,28 @@
 <h1>Ivan the Terrible's Blog</h1>
 
 <section class="blog">
-  <%= render @posts %>
+  <%= will_paginate @posts %>
+  <% @posts.each do |post| %>
+    <section class="post">
+      <h2>Post <%= "#{post.id}: #{post.title}" %></h2>
+      <div class="post"><%= post.body %></div>
+      <div class="post_nav">
+        <%= link_to 'Show', post %> |
+        <%= link_to 'Edit', edit_post_path(post) %> |
+        <%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %>
+      </div>
+      <%= post.comments.each do |comment| %>
+      <div class="comment">
+        <h3>Comment <%= comment.id %>:</h3>
+        <p><%= comment.body %></p>
+        <%= link_to 'Show', comment %> 
+      </div>
+      <% end %>
+    </section>
+  <% end %>
 </section>
 
 <br />
 
 <%= link_to 'New Post', new_post_path %>
+

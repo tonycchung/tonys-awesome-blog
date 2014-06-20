@@ -1,9 +1,15 @@
-# My New Blog!
+# Tony's Awesome Blog  
 
-I've got a lot to say, and now I have a place to say it!!!!!
+This is forked from [Ivan's Terrible Blog](https://github.com/ivanoats/ivan_the_terribles_blog) to practice optimization techniques.
 
-Read all my amazing posts!!!!! You can load them into the app with: `rake load:blog`
+I used eager loading, page caching, and direct post rendering rather than form rendering to speed things up.  
+  
+Here are my load impact [results](https://loadimpact.com/test/view/1705840)
 
-Since I know you want to read them all, I designed my page to show EVERYTHING on the front page of the site!!!!!
+[Results Screenshot](https://drive.google.com/file/d/0BwVs_2YZKGezMEIwbHZQT0xIdHc/edit?usp=sharing)  
 
-I know it is a little slow (but totes worth it!!!!)... _Do you know how I can make it faster?_
+To load blogs into the database simply run:
+
+```
+rake load:blog
+```

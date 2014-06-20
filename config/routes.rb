@@ -6,5 +6,6 @@ IvanTheTerriblesBlog::Application.routes.draw do
 
   root :to => 'posts#index'
 
+  get 'posts/page/:page' => 'posts#index'
 end
 

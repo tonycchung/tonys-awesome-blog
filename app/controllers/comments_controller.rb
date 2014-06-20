@@ -1,8 +1,9 @@
 class CommentsController < ApplicationController
+  caches_page :index, :show
   # GET /comments
   # GET /comments.json
   def index
-    @comments = Comment.all
+    @comments = Comment.all.includes(:replies).paginate(page: params[:page], per_page: 10)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -14,6 +15,7 @@ class CommentsController < ApplicationController
   # GET /comments/1.json
   def show
     @comment = Comment.find(params[:id])
+    @replies = @comment.replies.paginate(page: params[:page], per_page: 100)
 
     respond_to do |format|
       format.html # show.html.erb
@@ -40,7 +42,7 @@ class CommentsController < ApplicationController
   # POST /comments
   # POST /comments.json
   def create
-    @comment = Comment.new(params[:comment])
+    @comment = Comment.new(comment_params)
 
     respond_to do |format|
       if @comment.save
@@ -59,7 +61,11 @@ class CommentsController < ApplicationController
     @comment = Comment.find(params[:id])
 
     respond_to do |format|
-      if @comment.update_attributes(params[:comment])
+      if @comment.update_attributes(comment_params)
+        expire_page posts_path
+        expire_page post_path(@post)
+        expire_page "/"
+        FileUtils.rm_rf "#{page_cache_directory}/posts/page"
         format.html { redirect_to @comment, notice: 'Comment was successfully updated.' }
         format.json { head :no_content }
       else
@@ -79,5 +85,10 @@ class CommentsController < ApplicationController
       format.html { redirect_to comments_url }
       format.json { head :no_content }
     end
+  end
+
+  private
+  def comment_params
+    params.require(:comment).permit(:body, :post)
   end
 end
