@@ -6,8 +6,8 @@ I used eager loading, page caching, and direct post rendering rather than form r
   
 Here are my load impact [results](https://loadimpact.com/test/view/1705840)
 
-and a screenshot  
-![screenshot](https://drive.google.com/file/d/0BwVs_2YZKGezMEIwbHZQT0xIdHc/edit?usp=sharing)
+[Results Screenshot](https://drive.google.com/file/d/0BwVs_2YZKGezMEIwbHZQT0xIdHc/edit?usp=sharing)  
+
 To load blogs into the database simply run:
 
 ```
